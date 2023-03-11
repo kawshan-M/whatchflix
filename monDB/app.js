@@ -10,9 +10,12 @@ const uri = "mongodb+srv://Watchflix:P9rVbkZgzRN9Gdj5@cluster0.biflqxw.mongodb.n
 const client = new MongoClient(uri);
 
 // Set up Handlebars as the template engine
-app.engine('handlebars', exphbs.engine());
+app.engine('handlebars', exphbs.engine({
+  defaultLayout: 'movies',
+  layoutsDir: __dirname + '/views/',
+  partialsDir: __dirname + '/views/'
+}));
 app.set('view engine', 'handlebars');
-
 // Route to display the movies
 app.get('/', async (req, res) => {
   try {
