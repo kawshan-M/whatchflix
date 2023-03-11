@@ -26,11 +26,9 @@ run().catch(console.dir);
 
 
 
+//This code is only to read the whole dataset
+
 //install npm
-
-
-//***************** 
-
 //mkdir node_quickstart
 //cd node_quickstart
 //npm init -y
