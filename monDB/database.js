@@ -11,13 +11,13 @@ async function run() {
     const datasets = database.collection('dataset');
 
     const cursor = datasets.find({});
-   // const query = { Sentiment :'positive' }; //movie title we need to search // can put the
+
     await cursor.forEach(doc => console.log(doc));
 
     console.log(dataset);
   } finally {
     // Ensures that the client will close when you finish/error
-    //await client.close();
+  await client.close();
     
   }
 }
