@@ -1,32 +1,39 @@
-const express = require ("express")
+const { MongoClient } = require("mongodb");
 
-const app = express()
-const mongoose = require("mongoose");
-//database
+// Replace the uri string with your connection string.
+const uri = "mongodb+srv://Watchflix:3n8BM$*yQUsdajS@cluster0.biflqxw.mongodb.net/?retryWrites=true&w=majority";
 
-const database = module.exports=()=>{
-    const connectionParms ={
-        useNewUrlPraser: true,
-        useUnfiedTopology: true,
-    }
-    try{
-        mongoose.connect ('mongodb+srv://Watchflix:7TYVRXtcUxoESp9h@cluster0.biflqxw.mongodb.net/?retryWrites=true&w=majority')
-        console.log("Database connected successfully")
-        //database = result.db('')
-    } catch (error){
-        console.log(error)
-        console.log('Database connection failed')
-    }
+const client = new MongoClient(uri);
 
-    app.get('/', (req, resp)=>{
-        resp.send('Welcome to Mongoose')
-        result.db
-    })
+async function run() {
+  try {
+    const database = client.db('Movie');
+    const datasets = database.collection('dataset');
+
+    const cursor = datasets.find({});
+   // const query = { Sentiment :'positive' }; //movie title we need to search // can put the
+    await cursor.forEach(doc => console.log(doc));
+
+    console.log(dataset);
+  } finally {
+    // Ensures that the client will close when you finish/error
+    //await client.close();
     
+  }
 }
+run().catch(console.dir);
 
-database();
 
-app.listen(3001, ()=>{
-    console.log("Server is runing in port 3001");
-})
+
+
+//install npm
+
+
+//***************** 
+
+//mkdir node_quickstart
+//cd node_quickstart
+//npm init -y
+//npm install mongodb@5.1
+
+
