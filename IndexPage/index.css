@@ -1,6 +1,10 @@
 /* Nav Bar */
 @charset "UTF-8";
 
+.container-fluid{
+  margin: 0;
+}
+
 .navbar-brand{
     margin:0px;
     font-family: 'Ubuntu', sans-serif;
@@ -9,6 +13,11 @@
 
 nav .nav-item{
     margin: 5px 10px;
+}
+
+
+nav .nav-item .btn{
+  border-color: #3cdb0c;
 }
 
 
@@ -21,7 +30,104 @@ nav .nav-item{
     background-color: #000000;
 }
 
+
+/* OffCanvas */
+.offcanvas-header ,.offcanvas-body{
+  background-color: #181818;
+}
+
+.offcanvas-header h5{
+  color: #fff;
+}
+
+.offcanvas-body button{
+  display: block;
+  margin: 80px auto;
+  
+}
+
+.twitter-btn,.camera-btn{
+  font-size: 75px;
+}
+
+.twitter-info-btn{
+  display: inline-block;
+  position: relative;
+  left: 80px;
+  bottom: 157px;
+}
+
+.camera-info-btn{
+  display: inline-block;
+  position: relative;
+  left: 80px;
+  bottom: 160px; 
+}
+
+/* .hover-text {
+  position: absolute;
+  color: #fff;
+  background-color: #666;
+  width: 200px;
+  height: 50px;
+  left: 105px;
+  display: none;
+  
+}
+
+.twitter-hover{
+  bottom: 130px;
+}
+
+.camera-hover{
+  bottom: 410px;
+}
+
+
+.twitter-info-btn:hover + .twitter-hover {
+  display: block;
+  
+}
+
+.camera-info-btn:hover + .camera-hover {
+  display: block;
+
+} */
+
+/* Text Field */
+
+.click-text {
+  display: none;
+    position: relative;
+    bottom: 160px;
+    left: 70px;
+    
+}
+
+.click-text input{
+  color: #000000;
+}
+
+.click-text button{
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  background-color: #000000;
+  border-radius: 10%;
+  border: 0;
+  
+}
+
+.click-text i{
+  margin: 0;
+  color: #3cdb0c;
+  padding: 10px;
+  
+}
+
+
 /* Carousel */
+
 
 .w-100{
     filter: brightness(40%);

@@ -22,35 +22,49 @@
      <!-- Icons -->
      <script src="https://kit.fontawesome.com/99bdbc31f3.js" crossorigin="anonymous"></script>
 
-     <script>
+     <!-- JS -->
+     <script src="script.js"></script> 
+
+     <!-- <script>
         window.console = window.console || function(t) {};
       </script>
       
-        
-        
         <script>
         if (document.location.search.match(/type=embed/gi)) {
           window.parent.postMessage("resize", "*");
         }
-      </script>
+      </script> -->
+
+      <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+     <script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
+
+      
+
      
 
 </head>
 <body>
-    <section id="main">
+    <section id="navBa">
         <div class="container-fluid">
             <!-- Nav Bar -->
             
-            <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-body-tertiary">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-body-tertiary fixed-top">
               
                 <a class="navbar-brand"  href="index.html"><img src="Logo.png" alt="Bootstrap" width="194" height="57.5"></a>
       
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
-      
+
+                
+
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                   <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                      <a href="index.html" class="nav-item nav-link btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i class="fa-solid fa-person"></i></a>
+                    </li>
                     <li class="nav-item">
                       <a href="index.html" class="nav-item nav-link">About</a>
                     </li>
@@ -69,7 +83,39 @@
                   </ul>
                 </div>
             </nav>
+          </div>
+    </section>
 
+     <!-- OffCanvas --> 
+
+    <section id="offcanvas">
+      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Get more personalized</h5>
+          <button type="button" class="btn-close btn-outline-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          
+          <!-- ML -Facial Expression Part -->
+            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-camera camera-btn"></i></button>
+            <button type="button" class="btn camera-info-btn btn-dark"><i class="fa-solid fa-circle-info"></i></button>
+
+            <!-- <div class="hover-text camera-hover">Little description about Facial Expression.</div> -->
+          
+           <!-- ML -Social Media Analysis Part --> 
+           <button type="button" class="btn btn-outline-primary click-button"><i class="fa-brands fa-twitter twitter-btn"></i></button>
+            <button type="button" class="btn twitter-info-btn btn-dark"><i class="fa-solid fa-circle-info"></i></button>
+
+            <!-- <div class="hover-text twitter-hover">Little description about Twitter Expression.</div> -->
+            <div class="click-text">
+              <form>
+                <input type="text" id="text-field">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+              </form>
+          </div>
+          
+        </div>
+      </div>
      </section>
 
      <section id="carousel">
@@ -126,7 +172,7 @@
             </button>
         </div>
     </div>
-     </section>
+    </section>
 
 
      <section class="game-section">
@@ -228,34 +274,6 @@
           </div>
         </div>
         </div>
-      </section>
-
-      <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
-
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
-    <script id="rendered-js" >
-        $(".custom-carousel").owlCarousel({
-        autoWidth: true,
-        loop: true });
-
-        $(document).ready(function () {
-        $(".custom-carousel .item").click(function () {
-            $(".custom-carousel .item").not($(this)).removeClass("active");
-            $(this).toggleClass("active");
-        });
-        });
-        //# sourceURL=pen.js
-    </script>
-
-      
-      
-
-      
-
-
-        
-            
-    
+      </section> 
 </body>
 </html>
