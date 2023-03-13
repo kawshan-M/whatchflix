@@ -1,36 +1,59 @@
 <html>
 <head>
-   <title>Open webcam using JavaScript.</title>
+   <title>Open webcam </title>
    <style>
-      *{
-         background-color: #658EA9;
+      body{
+         background-image: url('login-background.jpg');
       }
+      h1{
+         color:white;
+      }
+      h2{
+         color:white;
+         text-align: center;
+      }
+      h3{
+         color: #8B8B8B;
+         text-align: center;
+      }
+      h4{
+         color: #8B8B8B;
+         text-align: center;
+      }
+   
       #videoCam {
-         width: 630px;
-         height: 300px;
+         width: 350px;
+         height: 350px;
+         border-radius: 200pc;
          margin-left: 0px;
          border: 3px solid #ccc;
-         background: black;
+         background: rgb(240, 239, 239);
+         margin-left: 35%;
       }
       #startBtn {
-         margin-left: 280px;
+         margin-left:43%;
          width: 120px;
          height: 45px;
          cursor: pointer;
          font-weight: bold;
+         background-color: #7de809b7;
+         border-radius: 10px;
       }
       #startBtn:hover{
-         background-color: #647C90;
-         color: red;
+         color: rgb(255, 255, 255);
       }
    </style>
 </head>
 <body>
-   <h1>Open WebCam Using JavaScript</h1>
+   <h1>Watchflix</h1>
+   <h2>Welcome to Watchflix</h2>
+   <h3>Don't Know which or series film to watch?</h3>
+   <h4>Activate your camera and let us suggest you something based on your actual mood.</h4>
+
    <br/>
    <video id="videoCam"></video>
    <br/><br/>
-   <button id="startBtn" onclick="openCam()">Open Camera</button>
+   <button id="startBtn" onclick="openCam()">suggest me</button>
    <script>
       function openCam(){
          let All_mediaDevices=navigator.mediaDevices
@@ -59,4 +82,4 @@
       }
    </script> 
 </body>
-</html>ss
+</html>
