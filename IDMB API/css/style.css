@@ -1,0 +1,12 @@
+.movie-card {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 4px #ccc;
+    text-align: center;
+}
+
+.movie-title {
+    margin-top: 10px;
+    font-weight: bold;
+}
