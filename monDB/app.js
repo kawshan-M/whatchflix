@@ -1,6 +1,6 @@
 const express = require('express');
-const exphbs  = require('express-handlebars');
 const { MongoClient } = require("mongodb");
+const ejs = require('ejs');
 
 const app = express();
 
@@ -9,22 +9,19 @@ const uri = "mongodb+srv://Watchflix:P9rVbkZgzRN9Gdj5@cluster0.biflqxw.mongodb.n
 
 const client = new MongoClient(uri);
 
-// Set up Handlebars as the template engine
-app.engine('handlebars', exphbs.engine({
-  defaultLayout: 'movies',
-  layoutsDir: __dirname + '/views/',
-  partialsDir: __dirname + '/views/'
-}));
-app.set('view engine', 'handlebars');
+app.use(express.static('public'));
+
+// Set up EJS as the template engine
+app.engine('html', ejs.renderFile);
+app.set('view engine', 'html');
+
 // Route to display the movies
 app.get('/', async (req, res) => {
   try {
     const database = client.db('Movie');
     const datasets = database.collection('dataset');
-
-    const cursor = datasets.find({});
+    const cursor = datasets.aggregate([{ $sample: { size:6 } }]);
     const movies = [];
-
     await cursor.forEach(movie => {
       movies.push({
         _id: movie._id,
@@ -36,8 +33,33 @@ app.get('/', async (req, res) => {
       });
     });
 
-    // Render the movies.handlebars template with the movies data
-    res.render('movies', { movies });
+    // Render the index.html template with the movies data
+    res.render('index', { movies });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Route to return the movies data in JSON format
+app.get('/api/movies', async (req, res) => {
+  try {
+    const database = client.db('Movie');
+    const datasets = database.collection('dataset');
+    const cursor = datasets.aggregate([{ $sample: { size:6 } }]);
+    const movies = [];
+    await cursor.forEach(movie => {
+      movies.push({
+        _id: movie._id,
+        imdbId: movie.imdbId,
+        Title: movie.Title,
+        Genre: movie.Genre,
+        Poster: movie.Poster,
+        Sentiment: movie.Sentiment
+      });
+    });
+
+    res.json(movies);
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
