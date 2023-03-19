@@ -4,12 +4,15 @@ const ejs = require('ejs');
 
 const app = express();
 
+var path = require('path');
+
 // Replace the uri string with your connection string.
 const uri = "mongodb+srv://Watchflix:P9rVbkZgzRN9Gdj5@cluster0.biflqxw.mongodb.net/?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri);
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname,'public')))
 
 // Set up EJS as the template engine
 app.engine('html', ejs.renderFile);

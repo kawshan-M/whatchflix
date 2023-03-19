@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="index.css">
     <link rel="icon" href="favicon.ico">
 
+    
+
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css'>
@@ -24,7 +26,11 @@
 
      <!-- JS -->
      <script src="script.js"></script> 
+     <script src="search.js"></script>>
+     <script src="top100.js"></script>
+     <script src="trending.js"></script>
 
+     
      <!-- <script>
         window.console = window.console || function(t) {};
       </script>
@@ -122,7 +128,7 @@
 
         <!-- Carseaul -->
 
-        <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="hover">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img class="w-100" src="carousel-1.jpg" alt="Image">
@@ -130,14 +136,16 @@
                         <div class="p-3" style="max-width: 900px;">
                             <h5 class="text-white text-uppercase mb-3 animated slideInDown">Watchflix</h5>
                             <h1 class="display-1 text-white mb-md-1 animated zoomIn">Is the next gen movie recomendation system!</h1>
+
+                           
                            
                             <!-- Search bar -->
-                            <form action="" class="search-bar">
-                                <input type="search" name="search" pattern=".*\S.*" required>
-                                <button class="search-btn" type="submit">
+                             <div class="search-bar">
+                                <input type="search"  id="search-input" name="search" pattern=".*\S.*" required>
+                                <button class="search-btn" id="search-button">
                                     <span>Search</span>
                                 </button>
-                            </form>
+                              </div>
                         </div>
                     </div>
                 </div>
@@ -149,12 +157,12 @@
                             <h1 class="display-1 text-white mb-md-4 animated zoomIn"> Watch movies that fits into your mood</h1>
 
                             <!-- Search bar -->
-                            <form action="" class="search-bar">
-                                <input type="search" name="search" pattern=".*\S.*" required>
-                                <button class="search-btn" type="submit">
-                                    <span>Search</span>
-                                </button>
-                            </form>
+                            <!-- <div class="search-bar">
+                              <input type="search"  id="search-input" name="search" pattern=".*\S.*" required>
+                              <button class="search-btn" id="search-button">
+                                  <span>Search</span>
+                              </button>
+                            </div> -->
 
                         </div>
                     </div>
@@ -174,106 +182,36 @@
     </div>
     </section>
 
+    <!-- Suggested movies -->
 
-     <section class="game-section">
+    
 
-      <h2 class="line-title">Trending movies</h2>
-      <div class="owl-carousel custom-carousel owl-theme">
-        <div class="item active" style="background-image: url(blog-1.jpg);">
-          <div class="item-desc">
-            <h3>Gajaman</h3>
-            <p>Gajaman, sometimes referred to as Camillus' Gajaman 3D, is a 2023 Sri Lankan Sinhala 3D animation
-               comedy film directed by Chanaka Perera and co-produced by John Fonseka and Chamika Jinadasa for Studio 101.</p>
-          </div>
-        </div>
-        <div class="item" style="background-image: url(blog-2.jpg);">
-          <div class="item-desc">
-            <h3>Star wars</h3>
-            <p>Star Wars is an American epic space opera multimedia franchise created by George Lucas, 
-              which began with the eponymous 1977 film and quickly became a worldwide pop culture phenomenon.</p>
-          </div>
-        </div>
-        <div class="item" style="background-image: url(blog-3.jpg);">
-          <div class="item-desc">
-            <h3>Frozen</h3>
-            <p>Queen Elsa begins to hear a mysterious melodic voice calling to her. Unsettled, she answers it, 
-              thus awakening the elemental spirits and setting into motion a quest to restore an old injustice.</p>
-          </div>
-        </div>
-        <div class="item" style="background-image: url(blog-4.jpg);">
-          <div class="item-desc">
-            <h3>star wars the rise of skywalker</h3>
-            <p>The revival of Emperor Palpatine resurrects the battle between the Resistance and the First Order while the Jedi's 
-              legendary conflict with the Sith Lord comes to a head..</p>
-          </div>
-        </div>
-        <div class="item" style="background-image: url(blog-5.jpg);">
-          <div class="item-desc">
-            <h3>Avatar</h3>
-            <p>Jake Sully and Ney'tiri have formed a family and are doing everything to stay together. However, they must leave their home and explore the regions of Pandora.
-               When an ancient threat resurfaces, Jake must fight a difficult war against the humans..</p>
-          </div>
-        </div>
-        <div class="item" style="background-image: url(blog-6.jpg);">
-          <div class="item-desc">
-            <h3>Ghost in the shell</h3>
-            <p>In the near future, Mira, the first cyber-human, must stop the growing cyber-terrorism. After discovering a secret of her identity, 
-              she sets out to learn more about her obscured past.</p>
-          </div>
-        </div>
-      </div>
-      </div>
+    <!-- Search movies -->
+    <section class="game-section">
+        <h2 class="line-title">What you're looking for</h2>
+         <div class="owl-carousel owl-theme search-carousel">
+         </div>
+         <div class="resultContainer" style="background-color: red;"></div>
     </section>
 
+    <!-- Trending movies -->
 
-      <section class="game-section">
+    <section class="game-section">
+        <h2 class="line-title">Trending Movies</h2>
+         <div class="owl-carousel owl-theme trending-carousel">
+         </div>
+         <div class="resultContainer" style="background-color: red;"></div>
+    </section>
 
-        <h2 class="line-title">most rated movies</h2>
-        <div class="owl-carousel custom-carousel owl-theme">
-          <div class="item active" style="background-image: url(blog-1.jpg);">
-            <div class="item-desc">
-              <h3>Gajaman</h3>
-              <p>Gajaman, sometimes referred to as Camillus' Gajaman 3D, is a 2023 Sri Lankan Sinhala 3D animation
-                 comedy film directed by Chanaka Perera and co-produced by John Fonseka and Chamika Jinadasa for Studio 101.</p>
-            </div>
-          </div>
-          <div class="item" style="background-image: url(blog-2.jpg);">
-            <div class="item-desc">
-              <h3>Star wars</h3>
-              <p>Star Wars is an American epic space opera multimedia franchise created by George Lucas, 
-                which began with the eponymous 1977 film and quickly became a worldwide pop culture phenomenon.</p>
-            </div>
-          </div>
-          <div class="item" style="background-image: url(blog-3.jpg);">
-            <div class="item-desc">
-              <h3>Frozen</h3>
-              <p>Queen Elsa begins to hear a mysterious melodic voice calling to her. Unsettled, she answers it, 
-                thus awakening the elemental spirits and setting into motion a quest to restore an old injustice.</p>
-            </div>
-          </div>
-          <div class="item" style="background-image: url(blog-4.jpg);">
-            <div class="item-desc">
-              <h3>star wars the rise of skywalker</h3>
-              <p>The revival of Emperor Palpatine resurrects the battle between the Resistance and the First Order while the Jedi's 
-                legendary conflict with the Sith Lord comes to a head..</p>
-            </div>
-          </div>
-          <div class="item" style="background-image: url(blog-5.jpg);">
-            <div class="item-desc">
-              <h3>Avatar</h3>
-              <p>Jake Sully and Ney'tiri have formed a family and are doing everything to stay together. However, they must leave their home and explore the regions of Pandora.
-                 When an ancient threat resurfaces, Jake must fight a difficult war against the humans..</p>
-            </div>
-          </div>
-          <div class="item" style="background-image: url(blog-6.jpg);">
-            <div class="item-desc">
-              <h3>Ghost in the shell</h3>
-              <p>In the near future, Mira, the first cyber-human, must stop the growing cyber-terrorism. After discovering a secret of her identity, 
-                she sets out to learn more about her obscured past.</p>
-            </div>
-          </div>
-        </div>
-        </div>
-      </section> 
+    <!-- Most rated movies -->
+
+    <section class="game-section">
+        <h2 class="line-title">Most rated movies</h2>
+         <div class="owl-carousel owl-theme top100-carousel">
+         </div>
+         <div class="resultContainer" style="background-color: red;"></div>
+    </section>
+
+    
 </body>
 </html>

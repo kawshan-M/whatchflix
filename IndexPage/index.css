@@ -310,7 +310,8 @@ input {
     border-radius: 8px;
   }
   h3 {
-    margin-top: 10px
+    margin-top: 10px;
+    margin-bottom: 30px;
   }
   .uk-card > :last-child {
     margin-top:0;
@@ -456,6 +457,7 @@ h3 {
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
 }
 .game-section .item-desc {
+  margin-bottom: 40px;
   padding: 0 24px 12px;
   color: #fff;
   position: relative;
