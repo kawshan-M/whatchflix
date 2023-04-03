@@ -7,11 +7,15 @@
     <h1>Camera Page</h1>
     <video id="video" width="640" height="480" autoplay></video>
     <button id="capture">Capture</button>
+    <p id="status"></p>
+    <p id="mood"></p>
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
         var video = document.getElementById('video');
         var canvas = document.getElementById('canvas');
         var captureButton = document.getElementById('capture');
+        var statusElement = document.getElementById('status');
+        var moodElement = document.getElementById('mood');
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
@@ -22,11 +26,21 @@
             });
 
         captureButton.addEventListener('click', function() {
+            statusElement.innerText = 'Capturing image...';
             var context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             var image = canvas.toDataURL('image/png');
-            console.log(image);
+
+            fetch('/capture', {
+                method: 'POST',
+                body: new FormData(document.querySelector('form')),
+            })
+            .then(response => response.json())
+            .then(data => {
+                moodElement.innerText = 'Your mood is: ' + data.mood;
+                statusElement.innerText = '';
+            });
         });
     </script>
 </body>
