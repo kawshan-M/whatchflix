@@ -16,6 +16,7 @@ def preprocess_image(image_data):
     image_array = np.array(image)
     
     # Preprocess the image array
+    
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2GRAY)
     
