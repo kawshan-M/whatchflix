@@ -48,11 +48,17 @@
     </div>
     <p id="status"></p>
     <p id="mood"></p>
+    <form id="capture-form" method="POST" enctype="multipart/form-data">
+        <input type="file" accept="image/*" name="image"/>
+        <button type="submit" id="predict-button" style="display: none;">Predict Mood</button>
+    </form>
     <script>
         var video = document.getElementById('video');
         var captureButton = document.getElementById('capture');
+        var predictButton = document.getElementById('predict-button');
         var statusElement = document.getElementById('status');
         var moodElement = document.getElementById('mood');
+        var form = document.getElementById('capture-form');
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
@@ -72,16 +78,37 @@
 
             var image = canvas.toDataURL('image/png');
 
-            fetch('/capture', {
-                method: 'POST',
-                body: new FormData(document.querySelector('form')),
-            })
-            .then(response => response.json())
-            .then(data => {
-                moodElement.innerText = 'Your mood is: ' + data.mood;
-                statusElement.innerText = '';
-            });
+            // Update the form with the captured image data
+            var formData = new FormData(form);
+            formData.set('image', dataURItoBlob(image), 'image.png');
+
+            // Submit the form to the Flask app
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action, true);
+            xhr.onload = function (event) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    moodElement.innerText = 'Your mood is: ' + response.mood;
+                    statusElement.innerText = '';
+                } else {
+                    statusElement.innerText = 'Error: ' + xhr.statusText;
+                }
+            };
+            xhr.onerror = function (event) {
+                statusElement.innerText = 'Error: ' + xhr.statusText;
+            };
+            xhr.send(formData);
         });
+
+        function dataURItoBlob(dataURI) {
+            var byteString = atob(dataURI.split(',')[1]);
+            var ab = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: 'image/png' });
+        }
     </script>
 </body>
 </html>
