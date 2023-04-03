@@ -1,60 +1,69 @@
 from flask import Flask, render_template, request
-import base64
-from io import BytesIO
-import numpy as np
-from PIL import Image
-from tensorflow.keras.models import load_model
-import cv2
-from flask import jsonify
+from keras.models import load_model
+from PIL import Image, ImageOps
+import numpy as np 
 
 app = Flask(__name__)
 
-def preprocess_image(image_data):
-    # Decode the image data and convert it to a NumPy array
-    decoded_image = base64.b64decode(image_data.split(',')[1])
-    image = Image.open(BytesIO(decoded_image))
-    image_array = np.array(image)
-    
-    # Preprocess the image array
-    
-    # Convert the image to grayscale
-    gray_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2GRAY)
-    
-    # Resize the image to 48x48 pixels
-    resized_image = cv2.resize(gray_image, (48, 48))
-    
-    # Rescale the pixel values to be between 0 and 1
-    normalized_image = resized_image / 255.0
-    
-    # Add an extra dimension to the image array to make it compatible with the model
-    final_image = np.expand_dims(normalized_image, axis=-1)
-    
-    # Return the preprocessed image array
-    return image_array
+# Load the model
+model = load_model("keras_model.h5", compile=False)
 
-def predict_mood(image_data):
-    # Preprocess the image data
-    image_array = preprocess_image(image_data)
-    
-    # Load the Keras model
-    model = load_model('keras_model.h5')
-    
-    # Make a prediction
-    prediction = model.predict(np.array([image_array]))
-    
-    # TODO: Return the predicted mood
-    return prediction
+# Load the labels
+class_names = open("labels.txt", "r").readlines()
 
-@app.route('/')
-def index():
-    return render_template('camera.html')
+# Disable scientific notation for clarity
+np.set_printoptions(suppress=True)
 
-@app.route('/capture', methods=['POST'])
-def capture():
-    image_data = request.form['imageData']
-    predicted_mood = predict_mood(image_data)
-    # TODO: Add your code to show the predicted mood
-    return "OK"
+# Define a function to predict the image
+def predict_image(image_path):
+    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+    
+    # Open and resize the image
+    image = Image.open(image_path).convert("RGB")
+    size = (224, 224)
+    image = ImageOps.fit(image, size)
+    
+    # Convert the image to a numpy array and normalize
+    image_array = np.asarray(image)
+    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
+    data[0] = normalized_image_array
+    
+    # Make the prediction
+    prediction = model.predict(data)
+    index = np.argmax(prediction)
+    class_name = class_names[index]
+    confidence_score = prediction[0][index]
+    
+    return class_name[2:], confidence_score
+
+# Define a route to handle the image upload
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # Get the uploaded file
+        file = request.files['file']
+        
+        # Save the file to disk
+        file.save(file.filename)
+        
+        # Get the prediction
+        class_name, confidence_score = predict_image(file.filename)
+        
+        # Render the template with the prediction result
+        return render_template('result.html', class_name=class_name, confidence_score=confidence_score)
+    
+    return '''
+    <!doctype html>
+    <html>
+    <body>
+        <h1>Upload an image to predict</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Predict">
+        </form>
+    </body>
+    </html>
+    '''
 
 if __name__ == '__main__':
     app.run(debug=True)
