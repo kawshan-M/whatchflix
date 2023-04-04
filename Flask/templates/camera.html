@@ -86,7 +86,7 @@
             </nav>
           </div>
     </section>
-    
+
     <div id="container">
         <div id="camera">
             <video id="video" autoplay></video>
@@ -101,6 +101,7 @@
         <input type="file" accept="image/*" name="image"/>
         <button type="submit" id="predict-button" style="display: none;">Predict Mood</button>
     </form>
+    
     <script>
         var video = document.getElementById('video');
         var captureButton = document.getElementById('capture');
@@ -127,26 +128,41 @@
 
             var image = canvas.toDataURL('image/png');
 
-            // Update the form with the captured image data
-            var formData = new FormData(form);
-            formData.set('image', dataURItoBlob(image), 'image.png');
-
-            // Submit the form to the Flask app
-            var xhr = new XMLHttpRequest();
-            xhr.open(form.method, form.action, true);
-            xhr.onload = function (event) {
-                if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    moodElement.innerText = 'Your mood is: ' + response.mood;
-                    statusElement.innerText = '';
-                } else {
-                    statusElement.innerText = 'Error: ' + xhr.statusText;
+            // send the image data to the Flask server
+            $.ajax({
+                type: 'POST',
+                url: '/upload_image',
+                data: {image_data: image},
+                success: function(response) {
+                    console.log(response);
+                    // redirect to the results page
+                    window.location.href = '/results';
+                },
+                error: function(error) {
+                    console.log(error);
                 }
-            };
-            xhr.onerror = function (event) {
-                statusElement.innerText = 'Error: ' + xhr.statusText;
-            };
-            xhr.send(formData);
+            });
+
+            // // Update the form with the captured image data
+            // var formData = new FormData(form);
+            // formData.set('image', dataURItoBlob(image), 'image.png');
+
+            // // Submit the form to the Flask app
+            // var xhr = new XMLHttpRequest();
+            // xhr.open(form.method, form.action, true);
+            // xhr.onload = function (event) {
+            //     if (xhr.status === 200) {
+            //         var response = JSON.parse(xhr.responseText);
+            //         moodElement.innerText = 'Your mood is: ' + response.mood;
+            //         statusElement.innerText = '';
+            //     } else {
+            //         statusElement.innerText = 'Error: ' + xhr.statusText;
+            //     }
+            // };
+            // xhr.onerror = function (event) {
+            //     statusElement.innerText = 'Error: ' + xhr.statusText;
+            // };
+            // xhr.send(formData);
         });
 
         function dataURItoBlob(dataURI) {
