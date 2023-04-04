@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: movie.title,
                     genre: movie.genre_ids.map(genreId => genres.find(genre => genre.id === genreId).name).join(", "),
                     image: `https://image.tmdb.org/t/p/w200${movie.poster_path}`,
-                    //rating: movie.rating,
-                    description: movie.overview
+                    description: movie.overview,
+                    rating: movie.vote_average
                 };
 
                 newItems.push(movieData);
@@ -36,23 +36,22 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < newItems.length; i++) {
                 const newItem = newItems[i];
 
-
                 // Create a new item element and set its background image
                 const item = document.createElement('div');
-                item.innerHTML = '' // Clear the item container
+                item.innerHTML = ''; // Clear the item container
 
                 item.classList.add('item');
                 item.style.backgroundImage = `url(${newItem.image})`;
 
-                // Create a new item description element and set its title and description
+                // Create a new item description element and set its title, description, and rating
                 const itemDesc = document.createElement('div');
-                itemDesc.innerHTML = '' // Clear the itemDesc container
+                itemDesc.innerHTML = ''; // Clear the itemDesc container
                 itemDesc.classList.add('item-desc');
                 itemDesc.innerHTML = `
             <h3>${newItem.title}</h3>
             <p>${newItem.description}</p>
             <p>${newItem.genre}</p>
-            //<p>${newItem.rating}</p>
+            <p>Rating: ${newItem.rating}</p>
             `;
 
                 // Append the item description to the item
@@ -61,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Append the new item to the carousel
                 carousel.appendChild(item);
             }
-
 
             // Initialize the carousel after adding new items
             $('.trending-carousel').owlCarousel('destroy');
@@ -78,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
         })
-
 
     .catch(error => {
         console.error(error);
