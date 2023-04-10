@@ -1,96 +1,61 @@
-
+from flask import Flask, request, jsonify
 from keras.models import load_model
 from PIL import Image, ImageOps
-import numpy as np 
-
-# app = Flask(__name__)
-
-# # Load the model
-# model = load_model("keras_model.h5", compile=False)
-
-# # Load the labels
-# class_names = open("labels.txt", "r").readlines()
-
-# # Disable scientific notation for clarity
-# np.set_printoptions(suppress=True)
-
-# # Define a function to predict the image
-# def predict_image(image_path):
-#     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-    
-#     # Open and resize the image
-#     image = Image.open(image_path).convert("RGB")
-#     size = (224, 224)
-#     image = ImageOps.fit(image, size)
-    
-#     # Convert the image to a numpy array and normalize
-#     image_array = np.asarray(image)
-#     normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
-#     data[0] = normalized_image_array
-    
-#     # Make the prediction
-#     prediction = model.predict(data)
-#     index = np.argmax(prediction)
-#     class_name = class_names[index]
-#     confidence_score = prediction[0][index]
-    
-#     return class_name[2:], confidence_score
-
-
-from flask import Flask, render_template, request
+import numpy as np
+import io
+import base64
 
 app = Flask(__name__)
 
-from flask import Flask, render_template, request
+# Load the model
+model = load_model("/keras_model.h5", compile=False)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# Define the labels
+class_names = {
+    0: "Positive",
+    1: "Negative",
+    2: "Neutral"
+}
 
-@app.route('/upload_image', methods=['POST'])
-def upload_image():
-    # get the image data from the request
-    image_data = request.form['image_data']
+@app.route('/upload', methods=['POST'])
+def upload():
+    try:
+        # Get the image data from the POST request
+        image_data = request.json['image_data']
+        # Decode the Base64-encoded image data
+        image_bytes = base64.b64decode(image_data)
+        # Convert the image data to a PIL Image object
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
 
-    # pass the image data to the template
-    return render_template('results.html', image_data=image_data)
+        # Resize and normalize the image
+        size = (224, 224)
+        image = ImageOps.fit(image, size)
+        image_array = np.asarray(image)
+        normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
 
-@app.route('/results')
-def results():
-    return render_template('results.html')
+        # Create the data array for prediction
+        data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+        data[0] = normalized_image_array
+
+        # Make prediction
+        prediction = model.predict(data)
+        index = np.argmax(prediction)
+        class_name = class_names[index]
+        confidence_score = prediction[0][index]
+
+        # Return the prediction as JSON response
+        response = {
+            'class': class_name,
+            'confidence': float(confidence_score)
+        }
+        return jsonify(response)
+
+    except Exception as e:
+        # Return error message if any exception occurs
+        response = {
+            'error': str(e)
+        }
+        return jsonify(response), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
-# Define a route to handle the image upload
-# @app.route('/', methods=['GET', 'POST'])
-# def upload_file():
-#     if request.method == 'POST':
-#         # Get the uploaded file
-#         file = request.files['file']
-        
-#         # Save the file to disk
-#         file.save(file.filename)
-        
-#         # Get the prediction
-#         class_name, confidence_score = predict_image(file.filename)
-        
-#         # Render the template with the prediction result
-#         return render_template('result.html', class_name=class_name, confidence_score=confidence_score)
-    
-    # return 
-'''
-    <!doctype html>
-    <html>
-    <body>
-        <h1>Upload an image to predict</h1>
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <input type="submit" value="Predict">
-        </form>
-    </body>
-    </html>
-    '''
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
